@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to your account.">
+  <title>Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Atmospheric Writing Desk Viewport -->
+  <div class="desk-viewport">
+    
+    <!-- Directional Evening Lamp Illumination Falling Across the Desk -->
+    <div class="desk-lamp-glow" aria-hidden="true"></div>
+    <div class="desk-wood-grain" aria-hidden="true"></div>
+    <div class="desk-vignette" aria-hidden="true"></div>
+
+    <!-- The Correspondence Composition -->
+    <main class="correspondence-scene">
+      
+      <!-- Backing Paper Layer (Physical Depth & Natural Offset) -->
+      <div class="paper-backing-layer" aria-hidden="true">
+        <div class="backing-border"></div>
+      </div>
+
+      <!-- Main Object: Preserved Stationery Sheet -->
+      <article class="parchment-sheet" aria-labelledby="page-headline">
+        
+        <!-- Physical Paper Texture, Faint Creases, Corner Curl & Edge Aging -->
+        <div class="paper-surface-tooth" aria-hidden="true"></div>
+        <div class="paper-crease-vertical" aria-hidden="true"></div>
+        <div class="paper-crease-diagonal" aria-hidden="true"></div>
+        <div class="paper-edge-shading" aria-hidden="true"></div>
+        <div class="paper-corner-curl" aria-hidden="true"></div>
+        <div class="paper-lamp-sheen" aria-hidden="true"></div>
+        <div class="letterpress-ornamental-frame" aria-hidden="true"></div>
+
+        <!-- Tactile Rich Burgundy Wax Seal (Physical Pressed Paper Overlap) -->
+        <aside class="wax-seal" aria-label="Wax Seal Accent">
+          <div class="seal-wax-disc">
+            <div class="seal-wax-rim" aria-hidden="true"></div>
+            <div class="seal-crest-center">
+              <span class="seal-monogram" aria-hidden="true">✦</span>
+            </div>
+            <div class="seal-shimmer" aria-hidden="true"></div>
+          </div>
+        </aside>
+
+        <!-- Interior Content Surface -->
+        <div class="sheet-content">
+          
+          <!-- Editorial Heading Hierarchy -->
+          <header class="sheet-header">
+            <div class="titles-block">
+              <h1 id="page-headline" class="headline-text">Welcome back.</h1>
+              <p class="subheadline-text">Sign in to continue.</p>
+            </div>
+          </header>
+
+          <!-- Modern Authentication Form on Fine Parchment -->
+          <form class="sheet-form" action="#" method="POST" novalidate>
+            
+            <!-- Email Address Field -->
+            <div class="form-row">
+              <label for="email" class="ink-label">Email address</label>
+              <div class="ink-input-wrapper">
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  class="ink-input" 
+                  placeholder="name@example.com" 
+                  autocomplete="username" 
+                  spellcheck="false"
+                  required
+                >
+                <span class="ink-ruling-glow" aria-hidden="true"></span>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="form-row">
+              <div class="label-split">
+                <label for="password" class="ink-label">Password</label>
+                <a href="#forgot" class="ink-link ink-link--aside">Forgot password?</a>
+              </div>
+              <div class="ink-input-wrapper">
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  class="ink-input" 
+                  placeholder="••••••••••••" 
+                  autocomplete="current-password" 
+                  required
+                >
+                <span class="ink-ruling-glow" aria-hidden="true"></span>
+              </div>
+            </div>
+
+            <!-- Remember me auxiliary option -->
+            <div class="form-auxiliary">
+              <label class="parchment-checkbox" for="remember-me">
+                <input type="checkbox" id="remember-me" name="remember" class="checkbox-native">
+                <span class="checkbox-box" aria-hidden="true">
+                  <svg class="checkbox-tick" viewBox="0 0 14 14" fill="none">
+                    <path d="M2.5 7.5L5.5 10.5L11.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="checkbox-text">Remember me</span>
+              </label>
+            </div>
+
+            <!-- Primary Action Button -->
+            <div class="form-action">
+              <button type="submit" class="sheet-button" id="signin-button">
+                <span class="btn-text">Sign in</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+
+          </form>
+
+          <!-- Sheet Footer Navigation -->
+          <footer class="sheet-footer">
+            <div class="navigation-switch">
+              <span class="switch-prompt">New here?</span>
+              <a href="register.html" class="ink-link ink-link--prominent" id="register-nav-link">Create account</a>
+            </div>
+          </footer>
+
+        </div>
+      </article>
+
+    </main>
+  </div>
+</body>
+</html>

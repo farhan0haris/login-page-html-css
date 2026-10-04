@@ -1,0 +1,936 @@
+/* ==========================================================================
+   THE CORRESPONDENCE AUTHENTICATION SYSTEM
+   Physical Parchment Stationery on a Victorian Writing Desk
+   Strictly Pure CSS3 — Zero JavaScript / Frameworks
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DESIGN TOKENS & TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+:root {
+  /* Victorian Study & Dark Walnut Writing Surface */
+  --desk-charcoal: #0b0806;
+  --desk-walnut-deep: #160e09;
+  --desk-walnut-mid: #22140c;
+  --desk-mahogany-glow: #2c180e;
+  --desk-olive-undertone: #131610;
+  --desk-shadow-vignette: rgba(6, 4, 2, 0.92);
+
+  /* Directional Lamp / Candle Illumination (Upper-Left Falloff) */
+  --lamp-amber-warm: rgba(255, 218, 142, 0.24);
+  --lamp-honey-soft: rgba(230, 168, 85, 0.12);
+  --lamp-sheen-line: rgba(255, 248, 225, 0.16);
+
+  /* Backing Paper Layer (Physical Depth & Organic Shift) */
+  --backing-paper-base: #e4d8c8;
+  --backing-paper-edge: #cbbea9;
+  --backing-shadow-desk: rgba(8, 5, 3, 0.68);
+
+  /* Main Preserved Stationery: Fine Warm Ivory Parchment */
+  --parchment-top-highlight: #fbf7ef;
+  --parchment-body: #f5ece0;
+  --parchment-body-shade: #ebdccb;
+  --parchment-border: rgba(160, 125, 90, 0.32);
+  --parchment-edge-oxidation: rgba(145, 110, 75, 0.16);
+
+  /* Subtle Creases, Handling Marks & Corner Shadow */
+  --crease-line-shadow: rgba(80, 55, 35, 0.05);
+  --crease-line-highlight: rgba(255, 255, 255, 0.38);
+  --corner-curl-shadow: rgba(35, 20, 12, 0.12);
+
+  /* Iron-Gall Ink & Period Typography Tones */
+  --ink-heading: #1e130a;
+  --ink-secondary: #382517;
+  --ink-body: #483424;
+  --ink-muted: #6f5947;
+  --ink-subtle: #96806c;
+  --ink-placeholder: #a89481;
+  --ink-border-input: rgba(80, 55, 35, 0.24);
+  --ink-border-hover: rgba(80, 55, 35, 0.44);
+  --ink-border-focus: #523520;
+  --ink-focus-ring: rgba(185, 140, 65, 0.22);
+
+  /* Primary Action Button: Deep Forest Ink Material */
+  --btn-forest-top: #25372d;
+  --btn-forest-base: #1b2820;
+  --btn-forest-hover: #2e4337;
+  --btn-forest-active: #141f18;
+  --btn-text-cream: #faf6f0;
+
+  /* Pressed Burgundy Wax Seal */
+  --seal-base: #5a141c;
+  --seal-mid: #781c26;
+  --seal-top: #8c222e;
+  --seal-rim: #420b11;
+  --seal-emboss-deep: #2e060a;
+  --seal-highlight: rgba(255, 215, 195, 0.35);
+  --seal-shadow-drop: rgba(18, 4, 7, 0.45);
+
+  /* Typographic Hierarchy: Old-World Display + Modern Functional UI */
+  --font-role-display: 'Cormorant Garamond', 'Georgia', 'Garamond', serif;
+  --font-role-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Motion & Transitions */
+  --ease-natural: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s var(--ease-natural);
+  --transition-base: 0.35s var(--ease-natural);
+  --transition-slow: 0.75s var(--ease-natural);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL RESET & BASE RULES
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--desk-charcoal);
+  color: var(--ink-body);
+  font-family: var(--font-role-ui);
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  position: relative;
+  background-color: var(--desk-charcoal);
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink-border-focus);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   3. THE WRITING DESK ENVIRONMENT & WARM EVENING LIGHTING
+   -------------------------------------------------------------------------- */
+.desk-viewport {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3.25rem) clamp(1rem, 3vw, 2.25rem);
+  isolation: isolate;
+  background-color: var(--desk-charcoal);
+  /* Physical dark walnut writing surface with subtle olive & mahogany undertones */
+  background-image:
+    radial-gradient(ellipse 1000px 800px at 20% 10%, rgba(68, 40, 24, 0.68) 0%, transparent 70%),
+    radial-gradient(ellipse 850px 700px at 85% 85%, rgba(24, 30, 22, 0.45) 0%, transparent 65%),
+    linear-gradient(168deg, var(--desk-walnut-mid) 0%, var(--desk-walnut-deep) 45%, var(--desk-charcoal) 100%);
+}
+
+/* Single believable warm light source (table lamp / candle outside top-left) */
+.desk-lamp-glow {
+  position: absolute;
+  top: -22%;
+  left: 3%;
+  width: min(1050px, 105vw);
+  height: min(1050px, 105vw);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 36% 34%,
+    var(--lamp-amber-warm) 0%,
+    var(--lamp-honey-soft) 48%,
+    rgba(58, 32, 16, 0.05) 75%,
+    transparent 100%
+  );
+  filter: blur(95px);
+  pointer-events: none;
+  z-index: -2;
+  animation: lampWarmthDrift 22s ease-in-out infinite alternate;
+}
+
+@keyframes lampWarmthDrift {
+  0% {
+    transform: scale(0.98) translate(0, 0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.03) translate(14px, -10px);
+    opacity: 0.98;
+  }
+  100% {
+    transform: scale(0.99) translate(-8px, 12px);
+    opacity: 0.88;
+  }
+}
+
+/* Directional organic wood grain (no repetitive lines or artificial textures) */
+.desk-wood-grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      88deg,
+      transparent 0px,
+      transparent 190px,
+      rgba(48, 30, 18, 0.07) 191px,
+      transparent 193px
+    ),
+    radial-gradient(ellipse at 42% 58%, rgba(38, 24, 14, 0.4) 0%, transparent 80%);
+  z-index: -1;
+  opacity: 0.7;
+}
+
+/* Soft study perimeter vignette */
+.desk-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, transparent 42%, var(--desk-shadow-vignette) 100%);
+  z-index: -1;
+}
+
+/* --------------------------------------------------------------------------
+   4. THE CORRESPONDENCE COMPOSITION (PHYSICAL DEPTH & LAYERING)
+   -------------------------------------------------------------------------- */
+.correspondence-scene {
+  position: relative;
+  width: 100%;
+  max-width: 590px;
+  margin: 0 auto;
+  z-index: 2;
+  animation: sheetEntrance 1.1s var(--ease-natural) forwards;
+}
+
+@keyframes sheetEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. BACKING PAPER LAYER (ORGANIC SECONDARY SHEET OFFSET)
+   -------------------------------------------------------------------------- */
+.paper-backing-layer {
+  position: absolute;
+  inset: -6px -8px -12px -5px;
+  /* Slightly shifted & counter-rotated for tangible layered physical depth */
+  transform: rotate(-1.1deg) translate(-3px, 4px);
+  background: linear-gradient(
+    172deg,
+    var(--backing-paper-base) 0%,
+    var(--backing-paper-edge) 85%,
+    #baa995 100%
+  );
+  /* Organic slightly asymmetric border radii */
+  border-radius: 6px 4px 7px 5px / 5px 7px 4px 6px;
+  /* Deep multi-layered contact and cast shadow onto the desk */
+  box-shadow:
+    0 4px 8px -2px rgba(12, 7, 4, 0.5),
+    0 16px 32px -8px rgba(10, 6, 3, 0.65),
+    0 36px 64px -14px rgba(8, 4, 2, 0.75),
+    0 60px 90px -20px rgba(5, 3, 2, 0.85);
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.backing-border {
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed rgba(155, 130, 105, 0.32);
+  border-radius: 4px;
+  opacity: 0.55;
+}
+
+/* --------------------------------------------------------------------------
+   6. MAIN PARCHMENT SHEET (REAL PHYSICAL STATIONERY)
+   -------------------------------------------------------------------------- */
+.parchment-sheet {
+  position: relative;
+  width: 100%;
+  /* Asymmetric organic perimeter: real cut stationery, slightly imperfect */
+  border-radius: 5px 3px 6px 4px / 4px 6px 3px 5px;
+  /* Very slight, natural resting angle on the desk */
+  transform: rotate(0.35deg);
+  background: linear-gradient(
+    176deg,
+    var(--parchment-top-highlight) 0%,
+    var(--parchment-body) 42%,
+    var(--parchment-body-shade) 100%
+  );
+  /* Realistic contact shadow resting on the backing sheet */
+  box-shadow:
+    0 2px 5px rgba(22, 14, 8, 0.16),
+    0 8px 18px rgba(16, 9, 5, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 0 rgba(135, 105, 75, 0.22);
+  border: 1px solid var(--parchment-border);
+  z-index: 2;
+  overflow: visible;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+/* Natural fine paper tooth / fibrous stippling */
+.paper-surface-tooth {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 45% 45%, rgba(110, 80, 50, 0.022) 1px, transparent 1px),
+    radial-gradient(circle at 25% 75%, rgba(110, 80, 50, 0.018) 1px, transparent 1px);
+  background-size: 22px 22px, 34px 34px;
+  opacity: 0.85;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+/* Faint Vertical Crease Line (Fold mark across the sheet) */
+.paper-crease-vertical {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 47%;
+  width: 2px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    var(--crease-line-shadow) 0%,
+    var(--crease-line-highlight) 50%,
+    transparent 100%
+  );
+  opacity: 0.75;
+  z-index: 1;
+}
+
+/* Faint Diagonal Handling Crease (Subtle upper corner mark) */
+.paper-crease-diagonal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 130px;
+  height: 130px;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    transparent 48%,
+    var(--crease-line-shadow) 49%,
+    var(--crease-line-highlight) 50%,
+    transparent 52%
+  );
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Gentle Perimeter Deckled Discoloration (Natural paper edge aging) */
+.paper-edge-shading {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 28px var(--parchment-edge-oxidation),
+    inset 0 0 8px rgba(120, 85, 55, 0.08);
+  z-index: 1;
+}
+
+/* Gentle Corner Curling / Shadow Variation (Bottom-Right Lift) */
+.paper-corner-curl {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at 100% 100%,
+    var(--corner-curl-shadow) 0%,
+    rgba(35, 20, 12, 0.03) 42%,
+    transparent 70%
+  );
+  border-bottom-right-radius: inherit;
+  z-index: 1;
+}
+
+/* Directional Warm Lamp Sheen across the Paper Face */
+.paper-lamp-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 252, 240, 0.45) 0%,
+    rgba(255, 245, 222, 0.15) 35%,
+    transparent 70%
+  );
+  z-index: 1;
+}
+
+/* Refined Blind-Debossed / Letterpress Ornamental Inner Frame */
+.letterpress-ornamental-frame {
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(170, 135, 95, 0.28);
+  border-radius: 2px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.65),
+    0 1px 1px rgba(100, 70, 45, 0.08);
+  z-index: 1;
+}
+
+.letterpress-ornamental-frame::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(170, 135, 95, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   7. TACTILE RICH BURGUNDY WAX SEAL (PHYSICAL OVERLAP)
+   -------------------------------------------------------------------------- */
+.wax-seal {
+  position: absolute;
+  top: -24px;
+  right: 30px;
+  width: 66px;
+  height: 66px;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 6px 12px var(--seal-shadow-drop));
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.wax-seal:hover {
+  transform: translateY(-2px) scale(1.02);
+  filter: drop-shadow(0 8px 16px rgba(16, 3, 6, 0.52));
+}
+
+.seal-wax-disc {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  /* Asymmetric organic perimeter simulating real pressed wax spread */
+  border-radius: 49% 51% 52% 48% / 50% 48% 52% 50%;
+  background: radial-gradient(
+    circle at 36% 32%,
+    var(--seal-top) 0%,
+    var(--seal-mid) 40%,
+    var(--seal-base) 75%,
+    var(--seal-rim) 100%
+  );
+  box-shadow:
+    inset 0 2px 3px var(--seal-highlight),
+    inset 0 -2px 3px rgba(25, 3, 6, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seal-wax-rim {
+  position: absolute;
+  inset: 4px;
+  border-radius: 48% 52% 50% 50% / 51% 49% 51% 49%;
+  border: 2px solid rgba(140, 35, 45, 0.45);
+  box-shadow:
+    0 1px 2px rgba(255, 215, 195, 0.25),
+    inset 0 1px 2px rgba(25, 4, 7, 0.55);
+  pointer-events: none;
+}
+
+.seal-crest-center {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, #68151f 0%, #420a11 85%, #2e0509 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(16, 2, 4, 0.85),
+    0 1px 1px rgba(255, 210, 190, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seal-monogram {
+  font-size: 1.1rem;
+  color: #2b0407;
+  text-shadow:
+    0 1px 0 rgba(255, 195, 175, 0.35),
+    0 -1px 0 rgba(12, 1, 3, 0.95);
+  line-height: 1;
+  user-select: none;
+}
+
+.seal-shimmer {
+  position: absolute;
+  top: 10%;
+  left: 20%;
+  width: 35%;
+  height: 25%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 235, 225, 0.28) 0%, transparent 80%);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   8. SHEET CONTENT CONTAINER & STRICT INTERNAL ALIGNMENT
+   -------------------------------------------------------------------------- */
+.sheet-content {
+  position: relative;
+  z-index: 5;
+  padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.75rem, 5vw, 3.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.6rem, 3.5vw, 2.25rem);
+}
+
+/* --------------------------------------------------------------------------
+   9. TYPOGRAPHY HIERARCHY: LITERARY EDITORIAL DISPLAY + MODERN FUNCTIONAL UI
+   -------------------------------------------------------------------------- */
+.sheet-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.titles-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* High-Contrast Literary Editorial Serif */
+.headline-text {
+  font-family: var(--font-role-display);
+  font-size: clamp(2.2rem, 5.2vw, 2.85rem);
+  font-weight: 600;
+  color: var(--ink-heading);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-feature-settings: "kern" 1, "liga" 1;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* Quieter, highly readable supporting text */
+.subheadline-text {
+  font-family: var(--font-role-ui);
+  font-size: clamp(0.9rem, 2vw, 0.98rem);
+  font-weight: 400;
+  color: var(--ink-muted);
+  line-height: 1.5;
+  letter-spacing: 0.005em;
+}
+
+/* --------------------------------------------------------------------------
+   10. AUTHENTICATION FORM DESIGN (INTEGRATED INTO PARCHMENT)
+   -------------------------------------------------------------------------- */
+.sheet-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.label-split {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}
+
+/* Functional UI: Clean Modern Sans-Serif Labels */
+.ink-label {
+  font-family: var(--font-role-ui);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+  color: var(--ink-secondary);
+  cursor: pointer;
+}
+
+.ink-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Fine Ink-Bordered Inputs Belonging Visually to the Parchment */
+.ink-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  font-family: var(--font-role-ui);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ink-heading);
+  background-color: rgba(255, 253, 248, 0.72);
+  border: 1px solid var(--ink-border-input);
+  border-radius: 4px;
+  outline: none;
+  box-shadow: inset 0 1px 3px rgba(60, 40, 25, 0.06);
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ink-input::placeholder {
+  color: var(--ink-placeholder);
+  font-weight: 300;
+  opacity: 0.85;
+}
+
+.ink-input:hover {
+  border-color: var(--ink-border-hover);
+  background-color: rgba(255, 254, 250, 0.9);
+}
+
+.ink-input:focus {
+  border-color: var(--ink-border-focus);
+  background-color: #ffffff;
+  box-shadow:
+    0 0 0 3px var(--ink-focus-ring),
+    inset 0 1px 2px rgba(60, 40, 25, 0.04);
+}
+
+/* Subtle glow / ruling line under input on focus */
+.ink-ruling-glow {
+  position: absolute;
+  bottom: 0;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(165, 125, 65, 0.65), transparent);
+  opacity: 0;
+  transform: scaleX(0.7);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+  pointer-events: none;
+}
+
+.ink-input:focus + .ink-ruling-glow {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Links inside the form */
+.ink-link {
+  font-family: var(--font-role-ui);
+  color: var(--ink-secondary);
+  text-decoration: underline;
+  text-decoration-color: rgba(85, 60, 40, 0.35);
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast), text-decoration-color var(--transition-fast);
+}
+
+.ink-link:hover {
+  color: var(--ink-heading);
+  text-decoration-color: var(--ink-heading);
+}
+
+.ink-link--aside {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* Checkbox auxiliary row */
+.form-auxiliary {
+  display: flex;
+  align-items: center;
+  margin-top: -0.2rem;
+}
+
+.parchment-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-native {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-box {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--ink-border-input);
+  border-radius: 3px;
+  background-color: rgba(255, 253, 248, 0.75);
+  box-shadow: inset 0 1px 2px rgba(60, 40, 25, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.checkbox-tick {
+  width: 12px;
+  height: 12px;
+  color: var(--btn-text-cream);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.checkbox-native:checked + .checkbox-box {
+  background-color: var(--btn-forest-base);
+  border-color: var(--btn-forest-base);
+}
+
+.checkbox-native:checked + .checkbox-box .checkbox-tick {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.checkbox-native:focus-visible + .checkbox-box {
+  outline: 2px solid var(--ink-border-focus);
+  outline-offset: 2px;
+}
+
+.checkbox-text {
+  font-family: var(--font-role-ui);
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--ink-body);
+}
+
+/* --------------------------------------------------------------------------
+   11. PRIMARY ACTION BUTTON (DEEP FOREST INK MATERIAL)
+   -------------------------------------------------------------------------- */
+.form-action {
+  margin-top: 0.5rem;
+}
+
+.sheet-button {
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(180deg, var(--btn-forest-top) 0%, var(--btn-forest-base) 100%);
+  color: var(--btn-text-cream);
+  border: 1px solid rgba(18, 28, 22, 0.65);
+  border-radius: 4px;
+  font-family: var(--font-role-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  box-shadow:
+    0 2px 4px rgba(20, 15, 10, 0.18),
+    0 6px 14px rgba(15, 20, 16, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.sheet-button:hover {
+  background: linear-gradient(180deg, #2c4236 0%, var(--btn-forest-hover) 100%);
+  transform: translateY(-1.5px);
+  box-shadow:
+    0 4px 8px rgba(20, 15, 10, 0.22),
+    0 10px 22px rgba(15, 20, 16, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.sheet-button:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+.sheet-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 3px rgba(20, 15, 10, 0.2),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-arrow {
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: transform var(--transition-fast);
+}
+
+/* --------------------------------------------------------------------------
+   12. SHEET FOOTER & CLEAN NAVIGATION SWITCH
+   -------------------------------------------------------------------------- */
+.sheet-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(165, 130, 95, 0.22);
+}
+
+.navigation-switch {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-size: 0.88rem;
+}
+
+.switch-prompt {
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+.ink-link--prominent {
+  font-weight: 600;
+  color: var(--ink-heading);
+}
+
+/* --------------------------------------------------------------------------
+   13. MOBILE RESPONSIVENESS (PRIMARY REQUIREMENT: 320px - 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 680px) {
+  .desk-viewport {
+    padding: 1.25rem 0.85rem;
+    align-items: flex-start;
+  }
+
+  .correspondence-scene {
+    max-width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  /* Keep organic layering subtle on mobile to ensure zero overflow */
+  .paper-backing-layer {
+    inset: -3px -4px -6px -3px;
+    transform: rotate(-0.6deg) translate(-2px, 3px);
+  }
+
+  .parchment-sheet {
+    transform: rotate(0.2deg);
+  }
+
+  /* Responsive seal positioned safely over the edge */
+  .wax-seal {
+    top: -18px;
+    right: 18px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .seal-crest-center {
+    width: 30px;
+    height: 30px;
+  }
+
+  .seal-monogram {
+    font-size: 0.95rem;
+  }
+
+  .sheet-content {
+    padding: 2.25rem 1.35rem 1.65rem 1.35rem;
+    gap: 1.4rem;
+  }
+
+  .letterpress-ornamental-frame {
+    inset: 8px;
+  }
+
+  .headline-text {
+    font-size: 2rem;
+  }
+
+  .ink-input {
+    height: 48px;
+    font-size: 1rem; /* Prevents unwanted iOS auto-zoom */
+  }
+
+  .sheet-button {
+    height: 50px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Extra small mobile screens (320px - 380px) */
+@media (max-width: 380px) {
+  .desk-viewport {
+    padding: 0.85rem 0.5rem;
+  }
+
+  .sheet-content {
+    padding: 1.85rem 1rem 1.35rem 1rem;
+    gap: 1.2rem;
+  }
+
+  .wax-seal {
+    top: -14px;
+    right: 12px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .seal-crest-center {
+    width: 26px;
+    height: 26px;
+  }
+
+  .seal-monogram {
+    font-size: 0.85rem;
+  }
+
+  .headline-text {
+    font-size: 1.75rem;
+  }
+
+  .sheet-form {
+    gap: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   14. ACCESSIBILITY & PREFERS-REDUCED-MOTION
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .desk-lamp-glow {
+    animation: none;
+  }
+
+  .correspondence-scene {
+    animation: none;
+  }
+}
