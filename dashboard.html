@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Administrative Folio Dashboard — User management and system summary.">
+  <meta name="description" content="Dashboard — User management and system summary.">
   <title>Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,44 +22,39 @@
   <!-- Atmospheric Desk Viewport -->
   <div class="desk-viewport desk-viewport--dashboard">
 
-    <!-- Directional Evening Lamp Illumination Falling Across Walnut Desk -->
+    <!-- Ambient Illumination and Subtle Wood Grain -->
     <div class="desk-lamp-glow" aria-hidden="true"></div>
     <div class="desk-wood-grain" aria-hidden="true"></div>
     <div class="desk-vignette" aria-hidden="true"></div>
 
-    <!-- Administrative Folio Container -->
-    <div id="dashboard-content" class="dashboard-folio" style="visibility: hidden; opacity: 0; transition: opacity 0.35s ease;">
+    <!-- Administrative Folio Container (~1200px max width) -->
+    <div id="dashboard-content" class="dashboard-folio" style="visibility: hidden; opacity: 0; transition: opacity 0.3s ease;">
 
       <!-- ═══════════════════════════════════════════════════════════════
-           FOLIO HEADER
+           1. DASHBOARD HEADER (Dark Translucent Espresso & Brass Surface)
            ═══════════════════════════════════════════════════════════════ -->
       <header class="dashboard-header" role="banner">
         <div class="dashboard-header__inner">
           
-          <!-- Identity and Welcome Hierarchy -->
-          <div class="dashboard-header__left">
-            <div class="dashboard-brand-row">
+          <div class="dashboard-header__identity">
+            <div class="dashboard-brand-mark">
               <span class="folio-seal-mark" aria-hidden="true">✦</span>
               <h1 class="dashboard-title">Dashboard</h1>
             </div>
-            <div class="dashboard-welcome-row">
+            <div class="dashboard-user-greeting">
               <p id="dashboard-welcome" class="dashboard-welcome">Welcome, Admin.</p>
-              <div class="user-identity-chip" id="user-chip">
-                <span class="identity-chip__indicator" aria-hidden="true"></span>
-                <span id="dashboard-user-email" class="identity-chip__email">admin@gmail.com</span>
-              </div>
+              <span class="dashboard-divider-bullet" aria-hidden="true">•</span>
+              <span id="dashboard-user-email" class="dashboard-user-email">admin@gmail.com</span>
             </div>
           </div>
 
-          <!-- Actions & Live Date/Time -->
-          <div class="dashboard-header__right">
-            <time id="dashboard-date" class="dashboard-header__date" aria-label="Current date and time"></time>
+          <div class="dashboard-header__actions">
             <button 
               type="button" 
               class="dashboard-logout-btn" 
               data-action="logout" 
               id="logout-button" 
-              aria-label="Sign out of your session"
+              aria-label="Sign out of your account"
             >
               <span class="logout-btn__text">Sign out</span>
               <span class="logout-btn__icon" aria-hidden="true">←</span>
@@ -70,195 +65,179 @@
       </header>
 
       <!-- ═══════════════════════════════════════════════════════════════
-           MAIN ADMINISTRATIVE BODY
+           2. SUMMARY METRICS (Three Clean, Separated Warm Ivory Cards)
            ═══════════════════════════════════════════════════════════════ -->
-      <main class="dashboard-main" role="main">
-
-        <!-- ─── SUMMARY CARDS ─── -->
-        <section class="dashboard-metrics" aria-label="Summary Statistics">
-          
-          <!-- Card 1: Total Users -->
-          <article class="summary-card summary-card--total" id="card-total-users">
-            <div class="summary-card__top">
-              <span class="summary-card__label">Total Users</span>
-              <div class="summary-card__badge" aria-hidden="true">Registry</div>
-            </div>
-            <div class="summary-card__body">
-              <div class="summary-card__icon summary-card__icon--total" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                </svg>
-              </div>
-              <div class="summary-card__data">
-                <p class="summary-card__value">120</p>
-                <p class="summary-card__note">Registered accounts in database</p>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 2: Active Users -->
-          <article class="summary-card summary-card--active" id="card-active-users">
-            <div class="summary-card__top">
-              <span class="summary-card__label">Active Users</span>
-              <div class="summary-card__badge summary-card__badge--active" aria-hidden="true">● 79% Active</div>
-            </div>
-            <div class="summary-card__body">
-              <div class="summary-card__icon summary-card__icon--active" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-              </div>
-              <div class="summary-card__data">
-                <p class="summary-card__value">95</p>
-                <p class="summary-card__note">Accounts in good standing</p>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 3: Pending Requests -->
-          <article class="summary-card summary-card--pending" id="card-pending-requests">
-            <div class="summary-card__top">
-              <span class="summary-card__label">Pending Requests</span>
-              <div class="summary-card__badge summary-card__badge--pending" aria-hidden="true">○ Action Required</div>
-            </div>
-            <div class="summary-card__body">
-              <div class="summary-card__icon summary-card__icon--pending" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
-                </svg>
-              </div>
-              <div class="summary-card__data">
-                <p class="summary-card__value">25</p>
-                <p class="summary-card__note">Awaiting administrative verification</p>
-              </div>
-            </div>
-          </article>
-
-        </section>
-
-        <!-- ─── RECENT USERS DIRECTORY ─── -->
-        <section class="dashboard-ledger-section" aria-label="Recent Users Directory">
-          
-          <div class="ledger-header">
-            <div class="ledger-header__titles">
-              <h2 class="ledger-title">Recent Users</h2>
-              <p class="ledger-subtitle">Directory of recently created accounts and access statuses.</p>
-            </div>
-            
-            <div class="ledger-controls">
-              <!-- Realtime search -->
-              <div class="ledger-search-box">
-                <span class="ledger-search-icon" aria-hidden="true">
-                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <circle cx="8.5" cy="8.5" r="5.5"/>
-                    <line x1="12.5" y1="12.5" x2="17" y2="17"/>
-                  </svg>
-                </span>
-                <label for="user-search" class="sr-only">Search users</label>
-                <input
-                  type="search"
-                  id="user-search"
-                  class="ledger-search-input"
-                  placeholder="Search by name or email…"
-                  autocomplete="off"
-                  spellcheck="false"
-                >
-              </div>
-
-              <!-- Status Filters -->
-              <div class="ledger-filter-group" role="group" aria-label="Filter users by account status">
-                <button type="button" class="ledger-filter-pill filter-active" data-filter="all">All</button>
-                <button type="button" class="ledger-filter-pill" data-filter="active">Active</button>
-                <button type="button" class="ledger-filter-pill" data-filter="pending">Pending</button>
-              </div>
+      <section class="dashboard-metrics" aria-label="Account Summary">
+        
+        <!-- Card 1: Total Users -->
+        <article class="summary-card summary-card--total" id="card-total-users">
+          <div class="summary-card__header">
+            <span class="summary-card__label">Total Users</span>
+            <div class="summary-card__icon summary-card__icon--total" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
             </div>
           </div>
-
-          <!-- Users Table Container -->
-          <div class="ledger-table-container">
-            <table class="ledger-table" aria-describedby="ledger-table-caption">
-              <caption id="ledger-table-caption" class="sr-only">
-                Administrative list of recent users including name, email address, and status.
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col" class="col-name">Name</th>
-                  <th scope="col" class="col-email">Email</th>
-                  <th scope="col" class="col-status">Status</th>
-                </tr>
-              </thead>
-              <tbody id="users-table-body">
-                <tr class="ledger-row" data-status="active">
-                  <td data-label="Name" class="cell-name">
-                    <div class="user-cell-meta">
-                      <span class="user-avatar-initial" aria-hidden="true">R</span>
-                      <span class="user-display-name">Rahul</span>
-                    </div>
-                  </td>
-                  <td data-label="Email" class="cell-email">
-                    <a href="mailto:rahul@gmail.com" class="ledger-email-link">rahul@gmail.com</a>
-                  </td>
-                  <td data-label="Status" class="cell-status">
-                    <span class="status-badge status-badge--active">
-                      <span class="badge-glyph" aria-hidden="true">●</span>
-                      <span class="badge-text">Active</span>
-                    </span>
-                  </td>
-                </tr>
-
-                <tr class="ledger-row" data-status="active">
-                  <td data-label="Name" class="cell-name">
-                    <div class="user-cell-meta">
-                      <span class="user-avatar-initial" aria-hidden="true">P</span>
-                      <span class="user-display-name">Priya</span>
-                    </div>
-                  </td>
-                  <td data-label="Email" class="cell-email">
-                    <a href="mailto:priya@gmail.com" class="ledger-email-link">priya@gmail.com</a>
-                  </td>
-                  <td data-label="Status" class="cell-status">
-                    <span class="status-badge status-badge--active">
-                      <span class="badge-glyph" aria-hidden="true">●</span>
-                      <span class="badge-text">Active</span>
-                    </span>
-                  </td>
-                </tr>
-
-                <tr class="ledger-row" data-status="pending">
-                  <td data-label="Name" class="cell-name">
-                    <div class="user-cell-meta">
-                      <span class="user-avatar-initial user-avatar-initial--pending" aria-hidden="true">A</span>
-                      <span class="user-display-name">Arjun</span>
-                    </div>
-                  </td>
-                  <td data-label="Email" class="cell-email">
-                    <a href="mailto:arjun@gmail.com" class="ledger-email-link">arjun@gmail.com</a>
-                  </td>
-                  <td data-label="Status" class="cell-status">
-                    <span class="status-badge status-badge--pending">
-                      <span class="badge-glyph" aria-hidden="true">○</span>
-                      <span class="badge-text">Pending</span>
-                    </span>
-                  </td>
-                </tr>
-
-                <tr id="empty-search-row" class="ledger-row--empty" style="display: none;">
-                  <td colspan="3" class="cell-empty-message">
-                    No matching users found in the directory.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="summary-card__body">
+            <p class="summary-card__value">120</p>
           </div>
+        </article>
 
-        </section>
+        <!-- Card 2: Active Users -->
+        <article class="summary-card summary-card--active" id="card-active-users">
+          <div class="summary-card__header">
+            <span class="summary-card__label">Active Users</span>
+            <div class="summary-card__icon summary-card__icon--active" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+          </div>
+          <div class="summary-card__body">
+            <p class="summary-card__value">95</p>
+          </div>
+        </article>
 
-      </main>
+        <!-- Card 3: Pending Requests -->
+        <article class="summary-card summary-card--pending" id="card-pending-requests">
+          <div class="summary-card__header">
+            <span class="summary-card__label">Pending Requests</span>
+            <div class="summary-card__icon summary-card__icon--pending" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+          </div>
+          <div class="summary-card__body">
+            <p class="summary-card__value">25</p>
+          </div>
+        </article>
+
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════════
+           3. RECENT USERS DIRECTORY (Dedicated Separate Ledger Panel)
+           ═══════════════════════════════════════════════════════════════ -->
+      <section class="dashboard-ledger-section" aria-label="Recent Users Directory">
+        
+        <div class="ledger-header">
+          <div class="ledger-header__titles">
+            <h2 class="ledger-title">Recent Users</h2>
+          </div>
+          
+          <div class="ledger-controls">
+            <!-- Search -->
+            <div class="ledger-search-box">
+              <span class="ledger-search-icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <circle cx="8.5" cy="8.5" r="5.5"/>
+                  <line x1="12.5" y1="12.5" x2="17" y2="17"/>
+                </svg>
+              </span>
+              <label for="user-search" class="sr-only">Search users</label>
+              <input
+                type="search"
+                id="user-search"
+                class="ledger-search-input"
+                placeholder="Search by name or email…"
+                autocomplete="off"
+                spellcheck="false"
+              >
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="ledger-filter-group" role="group" aria-label="Filter users by account status">
+              <button type="button" class="ledger-filter-pill filter-active" data-filter="all">All</button>
+              <button type="button" class="ledger-filter-pill" data-filter="active">Active</button>
+              <button type="button" class="ledger-filter-pill" data-filter="pending">Pending</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="ledger-table-container">
+          <table class="ledger-table" aria-describedby="ledger-table-caption">
+            <caption id="ledger-table-caption" class="sr-only">
+              Administrative list of recent users including name, email address, and status.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" class="col-name">Name</th>
+                <th scope="col" class="col-email">Email</th>
+                <th scope="col" class="col-status">Status</th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr class="ledger-row" data-status="active">
+                <td data-label="Name" class="cell-name">
+                  <div class="user-cell-meta">
+                    <span class="user-avatar-initial" aria-hidden="true">R</span>
+                    <span class="user-display-name">Rahul</span>
+                  </div>
+                </td>
+                <td data-label="Email" class="cell-email">
+                  <a href="mailto:rahul@gmail.com" class="ledger-email-link">rahul@gmail.com</a>
+                </td>
+                <td data-label="Status" class="cell-status">
+                  <span class="status-badge status-badge--active">
+                    <span class="badge-glyph" aria-hidden="true">●</span>
+                    <span class="badge-text">Active</span>
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="ledger-row" data-status="active">
+                <td data-label="Name" class="cell-name">
+                  <div class="user-cell-meta">
+                    <span class="user-avatar-initial" aria-hidden="true">P</span>
+                    <span class="user-display-name">Priya</span>
+                  </div>
+                </td>
+                <td data-label="Email" class="cell-email">
+                  <a href="mailto:priya@gmail.com" class="ledger-email-link">priya@gmail.com</a>
+                </td>
+                <td data-label="Status" class="cell-status">
+                  <span class="status-badge status-badge--active">
+                    <span class="badge-glyph" aria-hidden="true">●</span>
+                    <span class="badge-text">Active</span>
+                  </span>
+                </td>
+              </tr>
+
+              <tr class="ledger-row" data-status="pending">
+                <td data-label="Name" class="cell-name">
+                  <div class="user-cell-meta">
+                    <span class="user-avatar-initial user-avatar-initial--pending" aria-hidden="true">A</span>
+                    <span class="user-display-name">Arjun</span>
+                  </div>
+                </td>
+                <td data-label="Email" class="cell-email">
+                  <a href="mailto:arjun@gmail.com" class="ledger-email-link">arjun@gmail.com</a>
+                </td>
+                <td data-label="Status" class="cell-status">
+                  <span class="status-badge status-badge--pending">
+                    <span class="badge-glyph" aria-hidden="true">○</span>
+                    <span class="badge-text">Pending</span>
+                  </span>
+                </td>
+              </tr>
+
+              <tr id="empty-search-row" class="ledger-row--empty" style="display: none;">
+                <td colspan="3" class="cell-empty-message">
+                  No matching users found in the directory.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
 
     </div>
   </div>
