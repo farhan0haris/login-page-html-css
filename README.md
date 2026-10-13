@@ -1,88 +1,84 @@
-# Victorian Correspondence & Administrative Folio — Login, Registration & Dashboard
+# Login and Dashboard
 
-A responsive login, registration, and administrative dashboard web application built with HTML5, CSS3, and vanilla JavaScript. Features a distinctive Victorian-inspired visual identity with fine parchment textures, directional evening lamp illumination, subtle glassmorphism, restrained brass accents, and sharp typography.
+A responsive login and registration application with a distinctive Victorian-inspired visual design, parchment textures, refined typography and a matching administrative dashboard.
 
 ## Features
 
-- **Victorian Correspondence Design:** Atmospheric writing desk with warm parchment sheets, directional lamp glow, tactile wax seal, and fine letterpress borders.
-- **Administrative Folio Dashboard:** Redesigned administrative ledger folio with refined header, distinct summary cards, and recent users directory.
-- **Automatic Login After Registration:** Newly registered users are authenticated immediately upon valid registration and routed directly to the dashboard with personalized greetings.
-- **Web Crypto API Password Hashing:** Client-side account persistence with SHA-256 cryptographic hashing (passwords are never stored in raw text).
-- **Persistent Demo Accounts:** Registered accounts persist in `localStorage` and can sign in again in subsequent sessions without overwriting administrator credentials.
-- **Administrator Access:** Hardcoded demo administrator account (`admin@gmail.com` / `Admin@123`) always remains active and accessible.
-- **Duplicate Account Protection:** Rejects registration attempts using existing email addresses with accessible validation errors.
-- **Protected Dashboard:** Strict session control via `sessionStorage` with bfcache and visibility-change protection against back-navigation leaks.
-- **Summary Statistics:** Clean metrics grid displaying exact values:
-  - **Total Users:** 120 (Registry theme)
-  - **Active Users:** 95 (Emerald status badge: `● 79% Active`)
-  - **Pending Requests:** 25 (Amber status badge: `○ Action Required`)
-- **Recent Users Directory:** Structured ledger table featuring required users:
-  - Rahul (`rahul@gmail.com`, Active)
-  - Priya (`priya@gmail.com`, Active)
-  - Arjun (`arjun@gmail.com`, Pending)
-- **Realtime Search & Filter:** Interactive name/email search and status filtering (All, Active, Pending) with empty state messaging.
-- **Fully Responsive:** Seamless layout from mobile viewports (320px, 360px, 375px, 390px, 414px) through tablet (768px) and desktop (1024px, 1280px+).
+- **Login with demo administrator credentials** for immediate administrative access
+- **Input validation and error messages** providing accessible, real-time feedback
+- **User registration with automatic login** navigating directly to the dashboard upon successful registration
+- **Persisted demo accounts** in browser `localStorage` with Web Crypto API (SHA-256) password hashing
+- **Session management using `sessionStorage`** ensuring active session handling
+- **Protected dashboard with logout** guarding against unauthenticated access and bfcache history traversal
+- **Dashboard summary cards** displaying Total Users (120), Active Users (95), and Pending Requests (25)
+- **Recent users table** displaying directory records for Rahul, Priya, and Arjun with distinct status indicators
+- **User search and status filtering** with live query matching and status filtering (All, Active, Pending)
+- **Responsive layouts** engineered for viewports across desktop, tablet, and mobile (320px–1200px+)
+- **Victorian-inspired visual styling** with rich walnut tones, warm ivory surfaces, and restrained CSS animations
+
+## Demo Credentials
+
+- **Email:** `admin@gmail.com`
+- **Password:** `Admin@123`
+
+> **Demonstration Notice:** These are demonstration credentials. All authentication, validation, and session handling are implemented on the client side for demonstration purposes. This is not production-secure authentication.
 
 ## Tech Stack
 
-- **Structure:** HTML5 semantic markup
-- **Styling:** Vanilla CSS3 (Custom properties, grid, flexbox, glassmorphism)
-- **Logic:** Vanilla JavaScript (ES6+, Web Crypto API, Storage API)
-- **Dependencies:** None (No frameworks, CSS libraries, or external authentication packages)
+- HTML5
+- CSS3
+- Vanilla JavaScript
 
 ## Project Structure
 
 ```text
 login-page-html-css/
-├── index.html          # Sign In page (Victorian letter stationery)
-├── register.html       # Create Account page (with auto-login flow)
-├── dashboard.html      # Administrative Folio dashboard
-├── style.css           # Design tokens, layout, typography, and responsive styles
+├── index.html          # Login page (Victorian correspondence letter theme)
+├── register.html       # Registration page with direct auto-login flow
+├── dashboard.html      # Protected administrative ledger dashboard
+├── style.css           # Core stylesheet (design tokens, layouts, responsive styles)
 ├── js/
-│   ├── auth.js         # Shared authentication, Web Crypto hashing & session manager
-│   ├── login.js        # Sign-in form controller
-│   ├── register.js     # Registration validation & auto-login controller
-│   └── dashboard.js    # Dashboard session gate, search, filters & logout
+│   ├── auth.js         # Shared authentication module, Web Crypto hashing & session manager
+│   ├── login.js        # Sign-in form validation & controller
+│   ├── register.js     # Registration form validation & auto-login controller
+│   └── dashboard.js    # Dashboard session gate, search, filters & logout controller
 ├── assets/
-│   └── favicon.svg     # Wax seal crest favicon
-└── README.md           # Documentation
+│   └── favicon.svg     # Monogram seal crest favicon
+└── README.md           # Project documentation
 ```
 
-## Running Locally
+## How to Run
 
+### Direct File Access
 Open `index.html` directly in any modern browser:
-
 ```
 File → Open → index.html
 ```
 
-Or run using a lightweight local web server:
+### Using a Local Static Server
+Alternatively, serve the repository using a local static web server:
 
+Using `npx serve`:
 ```bash
 npx serve .
 ```
 
-## Demo Credentials
+Or using Python:
+```bash
+python -m http.server 3000
+```
 
-| Role | Email | Password |
-|:-----|:------|:---------|
-| Administrator | `admin@gmail.com` | `Admin@123` |
-| Registered Users | Custom email | Custom password (persisted in `localStorage`) |
+Then navigate to `http://localhost:3000` in your web browser.
 
-## How Authentication & Registration Work
+## Authentication Limitations
 
-1. **Sign In (`index.html`):** Validates required inputs, queries `window.Auth` for matching admin or hashed `localStorage` accounts, initializes `sessionStorage`, and redirects to `dashboard.html`.
-2. **Registration (`register.html`):** Validates name, email format, minimum password length, password confirmation match, and email uniqueness. On success, hashes the password with SHA-256 via Web Crypto API, saves the record to `localStorage`, initializes active session, and redirects directly to `dashboard.html` without revisiting the login page.
-3. **Session Protection (`dashboard.html`):** An inline script executes before any page rendering to verify active `sessionStorage`. If missing or logged out, the browser replaces history directly with `index.html`.
-4. **Logout:** Clears all session keys and calls `window.location.replace('index.html')` to ensure forward/back navigation cannot access protected pages.
+Browser storage (`localStorage` and `sessionStorage`) and client-side credential checks are used solely for this demonstration. Passwords are saved as SHA-256 hashes via the Web Crypto API, but client-side storage remains accessible to browser scripts.
 
-## Security Notice
-
-> **This project is a client-side frontend demonstration.**
-> In a production environment:
-> - Authentication, password hashing (e.g. Argon2, bcrypt), and credential validation must take place on a secure backend server.
-> - Sessions must utilize secure, HTTP-only, SameSite cookies or signed tokens.
-> - Client-side storage (`localStorage` / `sessionStorage`) is inherently accessible to client scripts and must not be used for production credentials.
+In a production application:
+- User authentication and authorization must always be enforced on a secure backend server.
+- Passwords must be salted and hashed on the server using industry standards such as Argon2 or bcrypt.
+- Sessions must be managed with secure, HTTP-only, SameSite cookies or signed tokens.
+- Sensitive credentials must never be validated or stored in client-side code.
 
 ## License
 
