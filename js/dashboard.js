@@ -1,139 +1,154 @@
 /* ==========================================================================
-   DASHBOARD SESSION PROTECTION & LOGOUT
-   Client-side demo session management — NOT for production use.
-   In a real application, session validation must be handled by a
-   backend server with proper token-based authentication.
+   DASHBOARD CONTROLLER
+   Session protection, administrative interactions, user search & filtering.
    ========================================================================== */
 
 (function () {
   'use strict';
 
-  const SESSION_KEY = 'isLoggedIn';
-  const SESSION_USER_KEY = 'sessionUser';
-
-  // ── Session Protection ──
-  // Check immediately before any content is rendered
-  function checkSession() {
-    if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
+  // ── Session Gate ──
+  function verifyActiveSession() {
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
       window.location.replace('index.html');
       return false;
     }
     return true;
   }
 
-  // Initial check — if not authenticated, redirect before DOM renders
-  if (!checkSession()) return;
+  // Pre-render verification
+  if (!verifyActiveSession()) return;
 
-  // Handle back-forward cache (bfcache) restoration
+  // Re-check session on bfcache restoration (Back/Forward navigation)
   window.addEventListener('pageshow', function (event) {
     if (event.persisted) {
-      // Page was restored from bfcache — recheck session
-      checkSession();
+      verifyActiveSession();
     }
   });
 
-  // Also recheck when the page regains visibility (tab switch)
+  // Re-check session when tab regains visibility
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible') {
-      checkSession();
+      verifyActiveSession();
     }
   });
 
-  // ── Dashboard Logic ──
+  // ── Dashboard Interactive Initialization ──
   document.addEventListener('DOMContentLoaded', function () {
-    // Populate welcome message
+    if (!verifyActiveSession()) return;
+
+    // 1. Populate personalized user information
     const welcomeEl = document.getElementById('dashboard-welcome');
-    const userEmail = sessionStorage.getItem(SESSION_USER_KEY) || 'User';
-    const displayName = userEmail.split('@')[0];
-    // Capitalize first letter
-    const formattedName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+    const emailEl = document.getElementById('dashboard-user-email');
+
+    let currentUser = null;
+    if (window.Auth && typeof window.Auth.getCurrentUser === 'function') {
+      currentUser = window.Auth.getCurrentUser();
+    }
+
+    const email = currentUser && currentUser.email ? currentUser.email : (sessionStorage.getItem('sessionUser') || 'admin@gmail.com');
+    let displayName = currentUser && currentUser.name ? currentUser.name : (sessionStorage.getItem('sessionName') || '');
+
+    if (!displayName) {
+      const prefix = email.split('@')[0];
+      displayName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+    }
+
     if (welcomeEl) {
-      welcomeEl.textContent = 'Welcome, ' + formattedName + '.';
+      welcomeEl.textContent = 'Welcome, ' + displayName + '.';
+    }
+    if (emailEl) {
+      emailEl.textContent = email;
     }
 
-    // ── Logout ──
-    const logoutButtons = document.querySelectorAll('[data-action="logout"]');
-    logoutButtons.forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
+    // 2. Sign Out Handler
+    const logoutBtn = document.getElementById('logout-button');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        performLogout();
+        if (window.Auth && typeof window.Auth.clearSession === 'function') {
+          window.Auth.clearSession();
+        } else {
+          sessionStorage.clear();
+        }
+        // Replace history entry so back button doesn't restore dashboard
+        window.location.replace('index.html');
       });
-    });
-
-    function performLogout() {
-      sessionStorage.removeItem(SESSION_KEY);
-      sessionStorage.removeItem(SESSION_USER_KEY);
-      sessionStorage.clear();
-      // Replace the current history entry so Back won't return here
-      window.location.replace('index.html');
     }
 
-    // ── Current Date/Time (Optional Enhancement) ──
+    // 3. Live Date and Time
     const dateEl = document.getElementById('dashboard-date');
     if (dateEl) {
-      function updateDateTime() {
+      function refreshDateTime() {
         const now = new Date();
         const options = {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
+          weekday: 'short',
+          month: 'short',
           day: 'numeric',
           hour: '2-digit',
           minute: '2-digit'
         };
         dateEl.textContent = now.toLocaleDateString('en-US', options);
       }
-      updateDateTime();
-      setInterval(updateDateTime, 30000); // Update every 30 seconds
+      refreshDateTime();
+      setInterval(refreshDateTime, 30000);
     }
 
-    // ── Search Users (Optional Enhancement) ──
+    // 4. Search and Status Filtering
     const searchInput = document.getElementById('user-search');
+    const filterPills = document.querySelectorAll('.ledger-filter-pill');
     const tableBody = document.getElementById('users-table-body');
+    const emptyRow = document.getElementById('empty-search-row');
 
-    if (searchInput && tableBody) {
-      searchInput.addEventListener('input', function () {
-        const query = this.value.toLowerCase().trim();
-        const rows = tableBody.querySelectorAll('tr');
-        rows.forEach(function (row) {
-          const text = row.textContent.toLowerCase();
-          row.style.display = text.includes(query) ? '' : 'none';
-        });
+    let activeFilter = 'all';
+
+    function applyFilterAndSearch() {
+      if (!tableBody) return;
+
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      const rows = tableBody.querySelectorAll('.ledger-row');
+      let visibleCount = 0;
+
+      rows.forEach(function (row) {
+        const rowText = row.textContent.toLowerCase();
+        const status = row.getAttribute('data-status') || '';
+
+        const matchesSearch = !query || rowText.includes(query);
+        const matchesFilter = activeFilter === 'all' || status === activeFilter;
+
+        if (matchesSearch && matchesFilter) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
       });
+
+      if (emptyRow) {
+        emptyRow.style.display = visibleCount === 0 ? '' : 'none';
+      }
     }
 
-    // ── Filter Users by Status (Optional Enhancement) ──
-    const filterButtons = document.querySelectorAll('[data-filter]');
-    if (filterButtons.length && tableBody) {
-      filterButtons.forEach(function (btn) {
+    if (searchInput) {
+      searchInput.addEventListener('input', applyFilterAndSearch);
+    }
+
+    if (filterPills.length) {
+      filterPills.forEach(function (btn) {
         btn.addEventListener('click', function () {
-          // Toggle active state
-          filterButtons.forEach(function (b) { b.classList.remove('filter-active'); });
+          filterPills.forEach(function (p) { p.classList.remove('filter-active'); });
           this.classList.add('filter-active');
-
-          const filter = this.getAttribute('data-filter');
-          const rows = tableBody.querySelectorAll('tr');
-
-          rows.forEach(function (row) {
-            if (filter === 'all') {
-              row.style.display = '';
-            } else {
-              const statusCell = row.querySelector('.status-badge');
-              if (statusCell) {
-                const status = statusCell.textContent.toLowerCase().trim();
-                row.style.display = status === filter ? '' : 'none';
-              }
-            }
-          });
+          activeFilter = this.getAttribute('data-filter') || 'all';
+          applyFilterAndSearch();
         });
       });
     }
 
-    // Show the dashboard content (it starts hidden until session is verified)
-    const dashboardContent = document.getElementById('dashboard-content');
-    if (dashboardContent) {
-      dashboardContent.style.visibility = 'visible';
-      dashboardContent.style.opacity = '1';
+    // 5. Reveal dashboard content once initialization is complete
+    const folioEl = document.getElementById('dashboard-content');
+    if (folioEl) {
+      folioEl.style.visibility = 'visible';
+      folioEl.style.opacity = '1';
     }
   });
 })();
