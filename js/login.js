@@ -1,22 +1,14 @@
 /* ==========================================================================
-   LOGIN AUTHENTICATION
-   Client-side demo authentication — NOT for production use.
-   In a real application, authentication and authorization must be
-   enforced by a backend server. Credentials should never be stored
-   or validated on the client side.
+   LOGIN CONTROLLER
+   Client-side authentication supporting Admin and registered accounts.
+   In a production application, authentication must be verified by a backend server.
    ========================================================================== */
 
 (function () {
   'use strict';
 
-  // Demo credentials
-  const DEMO_EMAIL = 'admin@gmail.com';
-  const DEMO_PASSWORD = 'Admin@123';
-  const SESSION_KEY = 'isLoggedIn';
-  const SESSION_USER_KEY = 'sessionUser';
-
-  // If already logged in, redirect to dashboard
-  if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+  // If already authenticated, redirect directly to dashboard
+  if (sessionStorage.getItem('isLoggedIn') === 'true') {
     window.location.replace('dashboard.html');
     return;
   }
@@ -31,7 +23,7 @@
 
     let isSubmitting = false;
 
-    // Create error message element
+    // Helper to create accessible error element
     function createErrorElement(id) {
       const el = document.createElement('p');
       el.id = id;
@@ -60,45 +52,43 @@
     emailInput.setAttribute('aria-describedby', 'email-error');
     passwordInput.setAttribute('aria-describedby', 'password-error');
 
-    function showError(element, message) {
+    function showError(element, inputEl, message) {
       element.textContent = message;
       element.style.display = 'block';
-      // Add error styling to the associated input
-      const row = element.closest('.form-row');
-      if (row) {
-        const input = row.querySelector('.ink-input');
-        if (input) input.classList.add('ink-input--error');
+      if (inputEl) {
+        inputEl.classList.add('ink-input--error');
+        inputEl.setAttribute('aria-invalid', 'true');
       }
     }
 
-    function clearError(element) {
+    function clearError(element, inputEl) {
       element.textContent = '';
       element.style.display = 'none';
-      const row = element.closest('.form-row');
-      if (row) {
-        const input = row.querySelector('.ink-input');
-        if (input) input.classList.remove('ink-input--error');
+      if (inputEl) {
+        inputEl.classList.remove('ink-input--error');
+        inputEl.removeAttribute('aria-invalid');
       }
     }
 
     function clearAllErrors() {
-      clearError(emailError);
-      clearError(passwordError);
-      clearError(formError);
+      clearError(emailError, emailInput);
+      clearError(passwordError, passwordInput);
+      formError.textContent = '';
+      formError.style.display = 'none';
     }
 
     // Clear individual field errors on input
     emailInput.addEventListener('input', function () {
-      clearError(emailError);
-      clearError(formError);
+      clearError(emailError, emailInput);
+      formError.style.display = 'none';
     });
 
     passwordInput.addEventListener('input', function () {
-      clearError(passwordError);
-      clearError(formError);
+      clearError(passwordError, passwordInput);
+      formError.style.display = 'none';
     });
 
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
       if (isSubmitting) return;
@@ -112,14 +102,14 @@
 
       // Validate email
       if (!email) {
-        showError(emailError, 'Please enter your email address.');
+        showError(emailError, emailInput, 'Please enter your email address.');
         emailInput.focus();
         hasError = true;
       }
 
       // Validate password
       if (!password) {
-        showError(passwordError, 'Please enter your password.');
+        showError(passwordError, passwordInput, 'Please enter your password.');
         if (!hasError) passwordInput.focus();
         hasError = true;
       }
@@ -131,26 +121,50 @@
       submitButton.disabled = true;
       submitButton.classList.add('sheet-button--loading');
       const btnText = submitButton.querySelector('.btn-text');
-      const originalText = btnText ? btnText.textContent : '';
+      const originalText = btnText ? btnText.textContent : 'Sign in';
       if (btnText) btnText.textContent = 'Signing in…';
 
-      // Simulate brief authentication delay for UX
-      setTimeout(function () {
-        if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-          // Success — set session and redirect
-          sessionStorage.setItem(SESSION_KEY, 'true');
-          sessionStorage.setItem(SESSION_USER_KEY, email);
+      try {
+        // Authenticate via window.Auth (supports Admin and registered accounts with Web Crypto hashing)
+        let authenticatedUser = null;
+        if (window.Auth && typeof window.Auth.authenticate === 'function') {
+          authenticatedUser = await window.Auth.authenticate(email, password);
+        } else {
+          // Direct fallback if auth.js was somehow not loaded
+          if (email === 'admin@gmail.com' && password === 'Admin@123') {
+            authenticatedUser = { email: email, name: 'Admin', isAdmin: true };
+          }
+        }
+
+        if (authenticatedUser) {
+          // Success — establish session and redirect
+          if (window.Auth && typeof window.Auth.createSession === 'function') {
+            window.Auth.createSession(authenticatedUser);
+          } else {
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('sessionUser', authenticatedUser.email);
+            sessionStorage.setItem('sessionName', authenticatedUser.name || 'Admin');
+          }
           window.location.replace('dashboard.html');
         } else {
           // Failed authentication
-          showError(formError, 'Invalid email or password. Please try again.');
+          formError.textContent = 'Invalid email or password. Please try again.';
+          formError.style.display = 'block';
           isSubmitting = false;
           submitButton.disabled = false;
           submitButton.classList.remove('sheet-button--loading');
           if (btnText) btnText.textContent = originalText;
           emailInput.focus();
         }
-      }, 600);
+      } catch (err) {
+        console.error('Authentication error:', err);
+        formError.textContent = 'An error occurred during authentication. Please try again.';
+        formError.style.display = 'block';
+        isSubmitting = false;
+        submitButton.disabled = false;
+        submitButton.classList.remove('sheet-button--loading');
+        if (btnText) btnText.textContent = originalText;
+      }
     });
   });
 })();
