@@ -35,11 +35,14 @@
   --parchment-border-side: rgba(255, 255, 255, 0.38);
   --parchment-border-bottom: rgba(140, 105, 75, 0.32);
 
-  /* Tactile Physical Paper Highlights & Aging */
-  --paper-crease-dark: rgba(75, 50, 30, 0.08);
-  --paper-crease-light: rgba(255, 255, 255, 0.42);
-  --paper-edge-discolor: rgba(145, 105, 68, 0.18);
-  --paper-dogear-shadow: rgba(30, 16, 8, 0.3);
+  /* Tactile Physical Paper Highlights, Irregular Creases & Aging */
+  --paper-crease-dark: rgba(72, 46, 26, 0.16);
+  --paper-crease-light: rgba(255, 255, 255, 0.58);
+  --paper-crease-ambient: rgba(90, 58, 32, 0.09);
+  --paper-fold-shadow: rgba(45, 28, 14, 0.14);
+  --paper-fold-ridge: rgba(255, 252, 244, 0.65);
+  --paper-edge-discolor: rgba(145, 102, 62, 0.22);
+  --paper-dogear-shadow: rgba(24, 12, 6, 0.38);
 
   /* Deep High-Contrast Iron-Gall Ink (Crisp, Dark, Solid Typography) */
   --ink-heading: #120904;
@@ -292,13 +295,19 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;
-  background: linear-gradient(
-    174deg,
-    var(--parchment-top) 0%,
-    var(--parchment-mid) 45%,
-    var(--parchment-bottom) 100%
-  );
+  /* Naturally organic, slightly hand-cut parchment silhouette */
+  border-radius: 9px 5px 12px 6px / 7px 11px 5px 9px;
+  background:
+    /* Gentle natural paper tonal undulating variations across the surface */
+    radial-gradient(ellipse 65% 55% at 32% 28%, rgba(255, 252, 246, 0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 72% 76%, rgba(230, 212, 190, 0.35) 0%, transparent 70%),
+    radial-gradient(circle at 50% 50%, rgba(248, 238, 222, 0.25) 0%, transparent 100%),
+    linear-gradient(
+      174deg,
+      var(--parchment-top) 0%,
+      var(--parchment-mid) 48%,
+      var(--parchment-bottom) 100%
+    );
   backdrop-filter: blur(12px) saturate(110%);
   -webkit-backdrop-filter: blur(12px) saturate(110%);
   /* Delicate glass-edge catch with brighter top/left highlight and soft bottom/right falloff */
@@ -317,109 +326,146 @@ body {
   z-index: 0;
 }
 
-/* Visible Paper Texture: Authentic Laid Paper Ribbing & Fibrous Grain (STRICTLY UNDER CONTENT) */
+/* Visible Paper Texture: Authentic Laid Paper Ribbing, Fiber Veins & Grain (STRICTLY UNDER CONTENT) */
 .paper-surface-tooth {
   position: absolute;
   inset: 0;
-  border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;
+  border-radius: 9px 5px 12px 6px / 7px 11px 5px 9px;
   pointer-events: none;
   background-image:
+    /* Fine laid lines */
     repeating-linear-gradient(
       0deg,
       transparent 0px,
-      transparent 5px,
-      rgba(110, 75, 40, 0.04) 6px,
-      transparent 7px
+      transparent 4.5px,
+      rgba(110, 75, 40, 0.038) 5px,
+      transparent 6px
     ),
+    /* Chain lines */
     repeating-linear-gradient(
       90deg,
       transparent 0px,
       transparent 38px,
-      rgba(110, 75, 40, 0.025) 39px,
+      rgba(110, 75, 40, 0.022) 39px,
       transparent 40px
     ),
-    radial-gradient(circle at 30% 25%, rgba(95, 65, 35, 0.06) 1px, transparent 1px),
-    radial-gradient(circle at 70% 65%, rgba(95, 65, 35, 0.05) 1px, transparent 1px),
-    radial-gradient(circle at 45% 85%, rgba(95, 65, 35, 0.045) 1px, transparent 1px);
-  background-size: 100% 7px, 40px 100%, 20px 20px, 28px 28px, 24px 24px;
-  opacity: 0.92;
+    /* Irregular paper fibers and pulp specks */
+    radial-gradient(ellipse 2px 1px at 24% 18%, rgba(88, 58, 30, 0.08) 0%, transparent 100%),
+    radial-gradient(ellipse 1px 2px at 78% 34%, rgba(88, 58, 30, 0.07) 0%, transparent 100%),
+    radial-gradient(circle at 42% 68%, rgba(95, 65, 35, 0.065) 1px, transparent 1px),
+    radial-gradient(ellipse 2px 1px at 64% 82%, rgba(88, 58, 30, 0.075) 0%, transparent 100%),
+    radial-gradient(circle at 18% 78%, rgba(95, 65, 35, 0.055) 1px, transparent 1px);
+  background-size: 100% 6px, 40px 100%, 34px 44px, 46px 52px, 22px 22px, 50px 38px, 28px 28px;
+  opacity: 0.95;
   mix-blend-mode: multiply;
   z-index: 1;
 }
 
-/* Visible Delicate Vertical Crease */
+/* Irregular Vertical Handling Fold (Gently Angled, Catching Warm Ambient Lamp Light) */
 .paper-crease-vertical {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 48%;
-  width: 3px;
+  left: 47%;
+  width: 14px;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--paper-crease-dark) 42%,
-    var(--paper-crease-light) 55%,
-    transparent 100%
-  );
-  opacity: 0.85;
+  /* Slightly off-vertical angle with highlight on ridge and shadow in recess */
+  transform: rotate(0.65deg);
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--paper-crease-ambient) 22%,
+      var(--paper-crease-dark) 42%,
+      var(--paper-crease-light) 49%,
+      var(--paper-fold-ridge) 53%,
+      rgba(255, 255, 255, 0.28) 60%,
+      transparent 100%
+    );
+  opacity: 0.9;
   z-index: 2;
 }
 
-/* Visible Delicate Diagonal Handling Crease */
+/* Secondary Transverse Fold & Irregular Shallow Wrinkles Across the Sheet */
 .paper-crease-diagonal {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 140px;
-  height: 140px;
+  inset: 0;
   pointer-events: none;
-  background: linear-gradient(
-    135deg,
-    transparent 47%,
-    var(--paper-crease-dark) 49%,
-    var(--paper-crease-light) 51%,
-    transparent 54%
-  );
-  opacity: 0.75;
+  border-radius: inherit;
+  background-image:
+    /* Diagonal corner bend fold from top-right down towards center */
+    linear-gradient(
+      142deg,
+      transparent 38%,
+      var(--paper-crease-ambient) 46%,
+      var(--paper-crease-dark) 48.5%,
+      var(--paper-crease-light) 50%,
+      var(--paper-fold-ridge) 51.5%,
+      transparent 55%
+    ),
+    /* Soft horizontal letterfold across upper-third */
+    linear-gradient(
+      178deg,
+      transparent 28%,
+      var(--paper-crease-ambient) 30.5%,
+      var(--paper-crease-dark) 31.8%,
+      var(--paper-crease-light) 32.6%,
+      var(--paper-fold-ridge) 33.2%,
+      transparent 35.5%
+    ),
+    /* Soft handling wrinkle radiating from lower-left */
+    linear-gradient(
+      38deg,
+      transparent 62%,
+      var(--paper-crease-ambient) 65%,
+      var(--paper-crease-dark) 66.2%,
+      var(--paper-crease-light) 67%,
+      transparent 69.5%
+    );
+  opacity: 0.88;
   z-index: 2;
 }
 
-/* Perimeter Deckled Discoloration */
+/* Perimeter Deckled Discoloration & Natural Soft Edge Darkening */
 .paper-edge-shading {
   position: absolute;
   inset: 0;
-  border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;
+  border-radius: 9px 5px 12px 6px / 7px 11px 5px 9px;
   pointer-events: none;
   box-shadow:
-    inset 0 0 32px var(--paper-edge-discolor),
-    inset 0 0 10px rgba(115, 80, 50, 0.1);
+    inset 0 0 38px var(--paper-edge-discolor),
+    inset 0 0 14px rgba(115, 80, 50, 0.12),
+    inset 0 2px 5px rgba(145, 105, 65, 0.1),
+    inset -2px 0 5px rgba(145, 105, 65, 0.08);
   z-index: 2;
 }
 
-/* Distinctive Detail: Tangible Folded Paper Dog-Ear Corner (Bottom-Right) */
+/* Distinctive Detail: Tactile Paper Corner Curl with Realistic Underside Depth (Bottom-Right) */
 .paper-corner-curl {
   position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 38px;
-  height: 38px;
+  bottom: -2px;
+  right: -2px;
+  width: 44px;
+  height: 44px;
   pointer-events: none;
   z-index: 4;
 }
 
+/* Deep soft shadow cast by the lifted corner onto desk and underlay */
 .paper-corner-curl::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -6px;
   background: radial-gradient(
-    circle at 100% 100%,
+    circle at 92% 92%,
     var(--paper-dogear-shadow) 0%,
-    rgba(30, 16, 8, 0.08) 50%,
+    rgba(24, 12, 6, 0.22) 35%,
+    rgba(24, 12, 6, 0.08) 55%,
     transparent 75%
   );
 }
 
+/* Turned-over corner flap with natural bevel and ivory underside tone */
 .paper-corner-curl::after {
   content: "";
   position: absolute;
@@ -429,33 +475,37 @@ body {
   height: 100%;
   background: linear-gradient(
     135deg,
-    transparent 49%,
-    rgba(225, 210, 190, 0.94) 50%,
-    rgba(242, 232, 218, 0.98) 100%
+    transparent 47.5%,
+    rgba(145, 108, 75, 0.35) 48.5%,
+    rgba(218, 198, 174, 0.96) 50%,
+    rgba(238, 226, 208, 0.98) 72%,
+    rgba(250, 243, 230, 1) 100%
   );
-  box-shadow: -1px -1px 3px rgba(35, 20, 10, 0.16);
-  border-top-left-radius: 2px;
+  box-shadow:
+    -2px -2px 5px rgba(28, 14, 6, 0.24),
+    -0.5px -0.5px 1px rgba(255, 255, 255, 0.7);
+  border-top-left-radius: 3px;
 }
 
-/* Subtle Specular Frosted Glass Reflection (No transform animation to avoid text repaints) */
+/* Subtle Specular Frosted Glass Reflection & Directional Lamp Sheen */
 .paper-lamp-sheen {
   position: absolute;
   inset: 0;
-  border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;
+  border-radius: 9px 5px 12px 6px / 7px 11px 5px 9px;
   pointer-events: none;
   background:
     linear-gradient(
       126deg,
-      rgba(255, 255, 255, 0.32) 0%,
-      rgba(255, 248, 235, 0.15) 26%,
-      transparent 52%,
-      rgba(255, 255, 255, 0.08) 74%,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 248, 235, 0.16) 24%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.09) 72%,
       transparent 100%
     ),
     radial-gradient(
-      ellipse at 30% 25%,
-      rgba(255, 255, 255, 0.22) 0%,
-      transparent 60%
+      ellipse at 28% 22%,
+      rgba(255, 255, 255, 0.24) 0%,
+      transparent 58%
     );
   z-index: 3;
   animation: glassSheenDrift 16s ease-in-out infinite alternate;
@@ -1002,6 +1052,11 @@ body {
     height: 52px;
   }
 
+  .paper-corner-curl {
+    width: 32px;
+    height: 32px;
+  }
+
   .seal-crest-center {
     width: 28px;
     height: 28px;
@@ -1051,6 +1106,11 @@ body {
     right: 14px;
     width: 44px;
     height: 44px;
+  }
+
+  .paper-corner-curl {
+    width: 26px;
+    height: 26px;
   }
 
   .seal-crest-center {
@@ -1347,7 +1407,7 @@ body {
   );
   border: 1px solid rgba(175, 135, 90, 0.32);
   border-top: 1px solid rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
+  border-radius: 8px 6px 7px 8px;
   padding: 1.45rem 1.65rem;
   box-shadow:
     0 3px 12px rgba(10, 6, 3, 0.22),
@@ -1361,6 +1421,37 @@ body {
     transform var(--transition-fast),
     box-shadow var(--transition-fast);
   overflow: hidden;
+}
+
+/* Subtle, clean laid paper tooth for dashboard metrics - placed strictly in underlay */
+.summary-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(110, 75, 40, 0.02) 5.5px,
+      transparent 6px
+    ),
+    /* Faint irregular light handling variation */
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      transparent 45%,
+      rgba(125, 90, 55, 0.035) 85%,
+      transparent 100%
+    );
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.summary-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .summary-card:hover {
@@ -1462,12 +1553,32 @@ body {
   );
   border: 1px solid rgba(170, 130, 85, 0.35);
   border-top: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: 8px;
+  border-radius: 8px 7px 9px 8px;
   box-shadow:
     0 4px 18px rgba(10, 6, 3, 0.28),
     0 1px 3px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 #ffffff;
   overflow: hidden;
+}
+
+/* Restrained laid texture and subtle edge depth on the administrative ledger surface */
+.dashboard-ledger-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 5px,
+      rgba(110, 75, 40, 0.02) 5.5px,
+      transparent 6px
+    ),
+    radial-gradient(ellipse at 88% 12%, rgba(255, 255, 255, 0.35) 0%, transparent 55%),
+    linear-gradient(180deg, transparent 80%, rgba(135, 95, 60, 0.04) 100%);
+  opacity: 0.8;
+  z-index: 0;
 }
 
 .ledger-header {
